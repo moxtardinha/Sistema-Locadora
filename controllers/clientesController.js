@@ -80,3 +80,35 @@ export const loginCliente = async (req, res) => {
     }                                                           
     
 };
+
+export const getAllClientes = async (req,res) => {
+    try {
+        const querysyntax = "SELECT nome, cpf, cnh FROM clientes";
+        const query = await db.execute(querysyntax);
+        return res.status(200).json(query);
+    }catch(error) {
+        console.error(error);
+        return res.status(500).json({ message: "Erro interno no servidor" });
+    }
+    
+    
+}
+
+export const getOneCliente = async (req,res) => {
+    try {
+        const cpf = req.params.cpf;
+        if (!cpf || cpf.length !== 11) {
+            return res.status(400).json({ message:"CPF solicitado não possui formato válido!" })
+        }
+        if (!validator.isNumeric(cpf)) {
+            return res.status(400).json({ message:"CPF suporta apenas Números!" });
+        }
+        const querysyntax = "SELECT nome,cpf,cnh FROM clientes WHERE cpf=?";
+        const [query] = await db.execute(querysyntax, [cpf]);
+        return res.status(200).json(query);
+    }catch(error) {
+        console.error(error);
+        return res.status(500).json({ message: "Erro interno no servidor" });
+    }
+
+}
