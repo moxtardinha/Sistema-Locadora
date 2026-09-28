@@ -7,6 +7,6 @@ const carrosRoute = express.Router();
 carrosRoute.post("/cadastrar", authCheck ,insertCarros);
 carrosRoute.get("/listar", authCheck, getAllCarros);
 carrosRoute.get("/listar/:placa", authCheck, getCarroByPlaca);
-carrosRoute.delete("/listar/:placa", authCheck, deleteCarroByPlaca);
+carrosRoute.delete("/deletar/:placa", authCheck, deleteCarroByPlaca);
 
 export default carrosRoute;
