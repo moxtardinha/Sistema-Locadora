@@ -1,18 +1,13 @@
 import db from "../database/db.js";
-import validator from 'validator';
 
 export const insertCarros = async (req,res) => {
     try {
-        const id_cliente = req.body.id_cliente;
         const modelo = req.body.modelo;
         const categoria = req.body.categoria;
         const complementos = req.body.complementos;
-        const placa = req.body.placa;
-        if (!id_cliente || !modelo || !categoria || !complementos || !placa) {
+        const placa = req.body.placa.toUpperCase();
+        if (!modelo || !categoria || !complementos || !placa) {
             return res.status(400).json({ message: "Dados Inválidos ou Inexistentes!" })
-        }
-        if (!validator.isNumeric(id_cliente)) {
-            return res.status(400).json({ message: "ID suporta apenas Numéricos!" })
         }
         if (placa.length !== 7) {
             return res.status(400).json({ message: "Formato da placa não suportado!" })
@@ -22,7 +17,7 @@ export const insertCarros = async (req,res) => {
         if (prequery.length !== 0) {
             return res.status(400).json({ message: "Placa já registrada no Banco!" });
         }
-        const querysyntax = "INSERT INTO carros (cliente,modelo,categoria,complementos,placa) VALUES (?,?,?,?,?)";
+        const querysyntax = "INSERT INTO carros (modelo,categoria,complementos,placa) VALUES (?,?,?,?)";
         const [query] = await db.execute(querysyntax, [id_cliente,modelo,categoria,complementos,placa]);
         return res.status(200).json({ message: "Carro Registrado!", id: query.insertId });
     }catch(error) {

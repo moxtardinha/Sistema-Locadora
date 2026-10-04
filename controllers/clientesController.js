@@ -38,7 +38,7 @@ export const createCliente = async (req, res) => {
     const [query] = await db.execute(querysyntax, data);
     return res
       .status(200)
-      .json({ message: "Usuário criado com sucesso!", id: query.insertID });
+      .json({ message: "Cliente criado com sucesso!", id: query.insertID });
   } catch (error) {
     console.error(error);
     return res.status(500).json({

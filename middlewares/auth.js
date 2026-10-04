@@ -17,5 +17,5 @@ export default function authCheck(req,res,next) {
         console.error(error);
         return res.status(401).json({ message: "Token Inexistente ou Expirado" });
     }
-
+    
 }

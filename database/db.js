@@ -5,7 +5,9 @@ const db = mysql.createPool({
     user: process.env.USERDB,
     password: process.env.PASSWORDDB,
     database: process.env.DBNAME,
-    socketPath: '/var/lib/mysql/mysql.sock'
+    port: 3306,
+    host: 'localhost',
+    socketPath: '/var/run/mysqld/mysqld.sock'
 });
 
 export default db;
