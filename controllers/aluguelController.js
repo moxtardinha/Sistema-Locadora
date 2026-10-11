@@ -75,9 +75,66 @@ export const desativarAluguel = async (req,res) => {
         const querysyntax = "UPDATE alugueis SET ativo=false WHERE id_aluguel=?";
         const [query] = await db.execute(querysyntax, [id_aluguel]);
         console.log(query);
-        return res.status(200).json({ message: "Aluguel Deletado com sucesso!" })
+        return res.status(200).json({ message: "Aluguel Desativado com sucesso!" })
     }catch(error) {
         console.error(error);
     }
-}
+};
 
+export const listarAlugueis = async (req,res) => {
+    try {
+        const querysyntax = `SELECT
+            a.id_aluguel as aluguel_id,
+            a.ativo,
+            c.nome as cliente_nome,
+            c.cpf as cliente_cpf,
+            c.cnh as cliente_cnh,
+            ca.placa,
+            ca.modelo,
+            ca.complementos,
+            ca.categoria,
+            a.data_inicio,
+            a.data_fim,
+            a.valor_diaria,
+            a.valor_total
+            FROM alugueis a
+            INNER JOIN clientes c ON a.id_cliente = c.id
+            LEFT JOIN carros ca ON a.id_carro = ca.id_carro
+        `;
+        const [rows] = await db.execute(querysyntax);
+        return res.status(200).json(rows);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Erro interno no servidor" });
+    };
+};
+
+export const listarAlugueisByID = async (req,res) => {
+    const cliente_cpf = req.params.cpf;
+    try {
+        const querysyntax = `SELECT
+            a.id_aluguel as aluguel_id,
+            a.ativo,
+            c.nome as cliente_nome,
+            c.cpf as cliente_cpf,
+            c.cnh as cliente_cnh,
+            ca.placa,
+            ca.modelo,
+            ca.complementos,
+            ca.categoria,
+            a.data_inicio,
+            a.data_fim,
+            a.valor_diaria,
+            a.valor_total
+            FROM alugueis a
+            INNER JOIN clientes c ON a.id_cliente = c.id
+            LEFT JOIN carros ca ON a.id_carro = ca.id_carro
+            WHERE c.cpf = ?
+        `;
+        const [rows] = await db.execute(querysyntax, [cliente_cpf]);
+        return res.status(200).json(rows);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Erro interno no servidor" });
+    };
+}

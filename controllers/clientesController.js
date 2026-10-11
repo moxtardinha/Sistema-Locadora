@@ -56,8 +56,6 @@ export const getAllClientes = async (req,res) => {
         console.error(error);
         return res.status(500).json({ message: "Erro interno no servidor" });
     }
-    
-    
 }
 
 export const getOneCliente = async (req,res) => {

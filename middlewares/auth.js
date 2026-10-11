@@ -2,7 +2,8 @@ import jsonwebtoken from 'jsonwebtoken';
 
 export default function authCheck(req,res,next) {
     try {
-        const token = req.body.token;
+        const token = req.headers.authorization?.split(" ")[1];
+        
         if (!token) {
             return res.status(401).json({ message: "Token inexistente" });
         }
