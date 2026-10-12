@@ -7,6 +7,6 @@ const ClientesRouter = express.Router();
 ClientesRouter.post("/cadastro", createCliente);
 ClientesRouter.get("/listar",authCheck, getAllClientes);
 ClientesRouter.get("/listar/:cpf",authCheck, getOneCliente);
-ClientesRouter.delete("/deletar/:cpf", authCheck, deleteClienteByCPF)
+ClientesRouter.delete("/deletar/:cpf", authCheck, deleteClienteByCPF) 
 
 export default ClientesRouter;

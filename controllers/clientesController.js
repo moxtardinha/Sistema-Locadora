@@ -49,8 +49,8 @@ export const createCliente = async (req, res) => {
 
 export const getAllClientes = async (req,res) => {
     try {
-        const querysyntax = "SELECT nome, cpf, cnh FROM clientes";
-        const query = await db.execute(querysyntax);
+        const querysyntax = "SELECT id, nome, cpf, cnh FROM clientes";
+        const [query] = await db.execute(querysyntax);
         return res.status(200).json(query);
     }catch(error) {
         console.error(error);

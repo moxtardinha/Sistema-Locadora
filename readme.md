@@ -37,7 +37,7 @@ Tabela `carros`: `id_carro`, `modelo`, `categoria`, `complementos`, `placa`.
 
 ### `insertCarros`: cadastrar carro
 
-**Rota:** (a definir), provavelmente `POST`
+**Rota:** `POST /carros/cadastrar`
 
 **Body**
 
@@ -80,7 +80,7 @@ Tabela `carros`: `id_carro`, `modelo`, `categoria`, `complementos`, `placa`.
 
 ### `getCarroByPlaca`: buscar por placa
 
-**Rota:** (a definir), `GET` com `:placa`
+**Rota:** `GET /carros/listar/:placa`
 
 | Status | Body |
 |---|---|
@@ -90,7 +90,7 @@ Tabela `carros`: `id_carro`, `modelo`, `categoria`, `complementos`, `placa`.
 
 ### `deleteCarroByPlaca`: remover por placa
 
-**Rota:** (a definir), `DELETE` com `:placa`
+**Rota:** `DELETE /carros/deletar/:placa`
 
 | Status | Body |
 |---|---|
@@ -106,7 +106,7 @@ Tabela `alugueis`: `id_aluguel`, `id_cliente`, `id_carro`, `data_inicio`, `data_
 
 ### `createAluguel`: registrar aluguel
 
-**Rota:** (a definir), provavelmente `POST`
+**Rota:** `POST /alugueis/cadastrar`
 
 **Body**
 
@@ -143,7 +143,7 @@ Tabela `alugueis`: `id_aluguel`, `id_cliente`, `id_carro`, `data_inicio`, `data_
 
 ### `desativarAluguel`: encerrar aluguel
 
-**Rota:** (a definir), provavelmente `PUT` ou `PATCH`
+**Rota:** `DELETE /alugueis/inativar`
 
 **Body:** `id_aluguel`, `id_cliente`, `senha_cliente`
 
@@ -188,7 +188,7 @@ Tabela `alugueis`: `id_aluguel`, `id_cliente`, `id_carro`, `data_inicio`, `data_
 
 ### `listarAlugueisByID`: listar por CPF
 
-**Rota:** (a definir), `GET` com `:cpf`
+**Rota:** `GET alugueis/listar/:cpf`
 
 Mesmo formato do `listarAlugueis`, filtrado por `c.cpf`. Retorna `[]` se não houver aluguéis.
 
@@ -200,7 +200,7 @@ Tabela `clientes`: `id`, `nome`, `cpf`, `senha` (hash), `cnh`.
 
 ### `createCliente`: cadastrar cliente
 
-**Rota:** (a definir), provavelmente `POST`
+**Rota:** `POST clientes/cadastro`
 
 **Body**
 
@@ -224,7 +224,7 @@ Tabela `clientes`: `id`, `nome`, `cpf`, `senha` (hash), `cnh`.
 
 ### `getAllClientes`: listar clientes
 
-**Rota:** (a definir), `GET`
+**Rota:** `GET clientes/listar`
 
 Retorna apenas `nome`, `cpf` e `cnh` (a senha não é exposta).
 
@@ -232,7 +232,7 @@ Retorna apenas `nome`, `cpf` e `cnh` (a senha não é exposta).
 
 ### `getOneCliente`: buscar por CPF
 
-**Rota:** (a definir), `GET` com `:cpf`
+**Rota:** `GET clientes/listar/:cpf` 
 
 | Status | Body |
 |---|---|
@@ -243,7 +243,7 @@ Retorna apenas `nome`, `cpf` e `cnh` (a senha não é exposta).
 
 ### `deleteClienteByCPF`: remover por CPF
 
-**Rota:** (a definir), `DELETE` com `:cpf`
+**Rota:** `DELETE clientes/deletar/:cpf`
 
 | Status | Body |
 |---|---|

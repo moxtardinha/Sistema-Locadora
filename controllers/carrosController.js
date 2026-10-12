@@ -18,7 +18,7 @@ export const insertCarros = async (req,res) => {
             return res.status(400).json({ message: "Placa já registrada no Banco!" });
         }
         const querysyntax = "INSERT INTO carros (modelo,categoria,complementos,placa) VALUES (?,?,?,?)";
-        const [query] = await db.execute(querysyntax, [id_cliente,modelo,categoria,complementos,placa]);
+        const [query] = await db.execute(querysyntax, [modelo,categoria,complementos,placa]);
         return res.status(200).json({ message: "Carro Registrado!", id: query.insertId });
     }catch(error) {
         console.error(error);
