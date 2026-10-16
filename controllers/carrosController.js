@@ -1,3 +1,4 @@
+import validator from "validator";
 import db from "../database/db.js";
 
 export const insertCarros = async (req,res) => {
@@ -5,12 +6,15 @@ export const insertCarros = async (req,res) => {
         const modelo = req.body.modelo;
         const categoria = req.body.categoria;
         const complementos = req.body.complementos;
-        const placa = req.body.placa.toUpperCase();
+        const placa = typeof req.body.placa === "string" ? req.body.placa.trim().toUpperCase() : "";
         if (!modelo || !categoria || !complementos || !placa) {
             return res.status(400).json({ message: "Dados Inválidos ou Inexistentes!" })
         }
         if (placa.length !== 7) {
             return res.status(400).json({ message: "Formato da placa não suportado!" })
+        }
+        if (!validator.isLicensePlate(placa, 'pt-BR')) {
+            return res.status(400).json({ message: "Formato de placa não suportado ou não condiz com os padrões brasileiros!" });
         }
         const prequerysyntax = "SELECT * FROM carros WHERE placa=?";
         const [prequery] = await db.execute(prequerysyntax, [placa]);
@@ -38,9 +42,12 @@ export const getAllCarros = async (req,res) => {
 }
 export const getCarroByPlaca = async (req,res) => {
     try {
-        const placa = req.params.placa;
+        const placa = typeof req.params.placa === "string" ? req.params.placa.trim().toUpperCase() : "";
         if (placa.length !== 7) {
             return res.status(400).json({ message: "Formato de placa não suportado!" });
+        }
+        if (!validator.isLicensePlate(placa, 'pt-BR')) {
+            return res.status(400).json({ message: "Formato de placa não suportado ou não condiz com os padrões brasileiros!" });
         }
         const querysyntax = "SELECT * FROM carros WHERE placa=?";
         const [query] = await db.execute(querysyntax, [placa]);
@@ -53,15 +60,24 @@ export const getCarroByPlaca = async (req,res) => {
 
 export const deleteCarroByPlaca = async (req,res) => {
     try {
-        const placa = req.params.placa;
+        const placa = typeof req.params.placa === "string" ? req.params.placa.trim().toUpperCase() : "";
         if (placa.length !== 7) {
             return res.status(400).json({ message: "Formato de placa não suportado!" });
         }
+        if (!validator.isLicensePlate(placa, 'pt-BR')) {
+            return res.status(400).json({ message: "Formato de placa não suportado ou não condiz com os padrões brasileiros!" });
+        }
         const querysyntax = "DELETE FROM carros WHERE placa=?";
         const [query] = await db.execute(querysyntax, [placa]);
+        if (query.affectedRows === 0) {
+            return res.status(404).json({ message: "Carro não Encontrado!" })
+        }
         res.status(200).json({ message: "Carro deletado com sucesso!" })
         
     }catch(error) {
+        if (error.errno === 1451) {
+            return res.status(409).json({ message: "Carro possui aluguéis vinculados e não pode ser excluído!" });
+        }
         console.error(error)
         return res.status(500).json({ message: "Erro interno no servidor!" });
     }
